@@ -43,7 +43,9 @@ def htmlize_source(s,dict={}):
     %(content)s
     {%% endblock %%}
     """
-    loader = jinja2.FileSystemLoader(["demosite/templates"])
+
+    dir = "./"+template_dir
+    loader = jinja2.FileSystemLoader([dir])
     env = jinja2.Environment(loader=loader)
     t=env.from_string(tsource%dict)
 
