@@ -3,7 +3,13 @@ lesstatic
 
 A simple Python based Static Site generator
 
-Optional Markdown in content files:
+### Config options
+extensions={'md':'markdown,'html':html}
+post_dirs=['posts']
+content_dirs=['content']
+templates_dir='tempalates' # note - only one of these
+
+### Optional Markdown in content files:
 
 If blog_dir is present, treat page as a blog. You can optionally specify 
 the other keywords as well
