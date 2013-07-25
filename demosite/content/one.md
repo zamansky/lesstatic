@@ -1,7 +1,8 @@
 ---
 layout: base.html
 title: The markdown page
-author: Mike Zamansky
+author: themarkdown authro
+block: content
 ---
 
 

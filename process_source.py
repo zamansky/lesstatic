@@ -1,14 +1,7 @@
 #!/usr/bin/python
 import re
-import markdown,codecs
+import markdown,codecs,jinja2
 import os
-
-processors={'markdown':markdown_source,
-           'html':htmlize_source}
-
-extensions={'md':'markdown',
-            'html':'html'}
-
 
 
 def separate_front_matter(s):
@@ -35,14 +28,34 @@ def separate_front_matter(s):
             doc=doc+line+"\n"
     return (yaml_dict,doc)
 
-def markdown_source(s):
-    print s
+def markdown_source(s,dict=None):
     r = markdown.markdown(s,['sane_lists'])
     return r
 
-def htmlize_source(s):
-    
-    return s
+def htmlize_source(s,dict={}):
+    """ NEED TO DEAL WITH THE TEMP TEMPLATE DIRECTORY
+    """
+
+    dict['content']=s
+    tsource="""
+    {%% extends "%(layout)s" %%}
+        {%% block %(block)s %%}
+    %(content)s
+    {%% endblock %%}
+    """
+    loader = jinja2.FileSystemLoader(["demosite/templates","/tmp"])
+    env = jinja2.Environment(loader=loader)
+    t = tsource%dict
+    f=open("/tmp/z","w")
+    f.write(t)
+    f.close()
+    t=env.get_template('z')
+
+    return t.render(dict)
+    #t2 = env.join_path(t,dict['layout'])
+    #   return t.render(dict)
+
+
 
 def process_file(fname):
     (root,ext)=os.path.splitext(fname)
@@ -53,15 +66,22 @@ def process_file(fname):
     rawfile = input_file.read()
     (yaml,source)=separate_front_matter(rawfile)
     # do any preprocessing
-    result = ""
-    if extensions.has_key(ext):
-        result = processors[extensions[ext]](source)
 
+    if extensions.has_key(ext):
+        source = processors[extensions[ext]](source)
+
+    result = htmlize_source(source,yaml)
 
     return result
 
+processors={'markdown':markdown_source,
+           'html':htmlize_source}
+
+extensions={'md':'markdown'}
+
+template_dir="demosite/templates"
 
 if __name__=="__main__":
-    #print process_file("demosite/content/index.html")
-    #print "\n--------------------\n"
+    print process_file("demosite/content/index.html")
+    print "\n--------------------\n"
     print process_file("demosite/content/one.md")
