@@ -7,7 +7,8 @@ author: Mike Zamansky
 
 ### THis page is in markdown
 
- * by {{author}}
- * this should
- * be a list
+
+* by {{author}}
+* this should
+* be a list
 
