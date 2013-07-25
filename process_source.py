@@ -5,7 +5,7 @@ import os
 
 
 def separate_front_matter(s):
-    """ Separate the yams in front from the rest of the text
+    """ Separate the yaml in front from the rest of the text
 
         Args:
           s - a string represeting the whole source document
@@ -15,7 +15,6 @@ def separate_front_matter(s):
     state="before_yaml"
     yaml_dict={}
     doc=""
-
     for line in s.split("\n"):
         if line=="---" and state=="before_yaml":
             state="in_yaml"
@@ -29,11 +28,18 @@ def separate_front_matter(s):
     return (yaml_dict,doc)
 
 def markdown_source(s,dict=None):
+    """ 
+    just sends the source through markdown for now
+    """
     r = markdown.markdown(s,['sane_lists'])
     return r
 
 def htmlize_source(s,dict={}):
-    """ NEED TO DEAL WITH THE TEMP TEMPLATE DIRECTORY
+    """
+    plugs the source html into a dummy jinja template (defined below)
+    then does the substitution.
+    Most of the work is to get the dummy template to 
+    extend from the parent specified in the dict (yaml)
     """
 
     dict['content']=s
@@ -56,6 +62,18 @@ def htmlize_source(s,dict={}):
 
 
 def process_file(fname):
+    """ Converts file to html by 
+        1. Reading the file
+        2. pulling off yaml front matter
+        3. running through processors like markdown etc
+        4. using jinja to convert the html (using the
+           augmented yaml frontmatter as the substitution dict
+        Args:
+          fname : full path to a file
+        Returns:
+          the content of the file converted to html
+    """
+          
     (root,ext)=os.path.splitext(fname)
     ext=ext[1:]
 
@@ -63,14 +81,19 @@ def process_file(fname):
     input_file = codecs.open(fname, mode="r", encoding="utf-8")
     rawfile = input_file.read()
     (yaml,source)=separate_front_matter(rawfile)
-    # do any preprocessing
 
+    # do any preprocessing
     if extensions.has_key(ext):
         source = processors[extensions[ext]](source)
 
+    # and then use jinja to deal with the templates
     result = htmlize_source(source,yaml)
 
     return result
+
+
+# Some configuration variables 
+# these have to be moved to a config file at some point
 
 processors={'markdown':markdown_source,
            'html':htmlize_source}
