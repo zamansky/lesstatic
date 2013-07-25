@@ -2,7 +2,7 @@
 import re
 import markdown,codecs,jinja2
 import os
-
+import config
 
 def separate_front_matter(s):
     """ Separate the yaml in front from the rest of the text
@@ -50,7 +50,7 @@ def htmlize_source(s,dict={}):
     {%% endblock %%}
     """
 
-    dir = "./"+template_dir
+    dir = "./"+config.template_dir
     loader = jinja2.FileSystemLoader([dir])
     env = jinja2.Environment(loader=loader)
     t=env.from_string(tsource%dict)
@@ -83,8 +83,8 @@ def process_file(fname):
     (yaml,source)=separate_front_matter(rawfile)
 
     # do any preprocessing
-    if extensions.has_key(ext):
-        source = processors[extensions[ext]](source)
+    if config.extensions.has_key(ext):
+        source = config.processors[config.extensions[ext]](source)
 
     # and then use jinja to deal with the templates
     result = htmlize_source(source,yaml)
@@ -92,15 +92,6 @@ def process_file(fname):
     return result
 
 
-# Some configuration variables 
-# these have to be moved to a config file at some point
-
-processors={'markdown':markdown_source,
-           'html':htmlize_source}
-
-extensions={'md':'markdown'}
-
-template_dir="demosite/templates"
 
 if __name__=="__main__":
     print process_file("demosite/content/index.html")
