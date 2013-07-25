@@ -1,6 +1,6 @@
 ---
 layout: base.html
-title: The main page
+title: The markdown page
 author: Mike Zamansky
 ---
 
