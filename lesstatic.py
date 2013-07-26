@@ -2,7 +2,8 @@ import config
 import process_source as ps
 import os
 import shutil
-import re
+import re,time
+
 def build_site():
     if os.path.exists(config.site):
         shutil.rmtree(config.site)
@@ -18,7 +19,7 @@ def build_site():
                 os.mkdir(dest+"/"+sub)
         for f in files:
             (name,ext)=os.path.splitext(f)
-            if ext[1:] in valid_extensions:
+            if name[0] != '.' and ext[1:] in valid_extensions:
                 result = ps.process_file(dir+"/"+f)
                 outfilename=dest+"/"+name+".html"
                 outfile = open(outfilename,"w")
@@ -27,11 +28,13 @@ def build_site():
 
 
 
+def serve():
+    build_site()
 
 if __name__=="__main__":
     config.base_dir=os.getcwd()
     print "HELLO"
-    build_site()
+    serve()
 
 
 
