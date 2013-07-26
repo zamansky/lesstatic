@@ -1,8 +1,8 @@
 #!/usr/bin/python
 import re
+import config
 import markdown,codecs,jinja2
 import os
-import config
 
 def separate_front_matter(s):
     """ Separate the yaml in front from the rest of the text
@@ -50,7 +50,7 @@ def htmlize_source(s,dict={}):
     {%% endblock %%}
     """
 
-    dir = "./"+config.template_dir
+    dir = config.base_dir+"/"+config.template_dir
     loader = jinja2.FileSystemLoader([dir])
     env = jinja2.Environment(loader=loader)
     t=env.from_string(tsource%dict)
