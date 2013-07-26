@@ -8,7 +8,7 @@ def build_site():
     if os.path.exists(config.site):
         shutil.rmtree(config.site)
     os.mkdir(config.site)
-    if os.path.exist(config.static):
+    if os.path.exists(config.static):
         shutil.copytree(config.static,config.site+"/"+config.static_dest)
 
     valid_extensions = config.extensions.keys()
