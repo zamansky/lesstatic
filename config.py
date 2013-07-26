@@ -5,8 +5,9 @@ processors={'markdown':ps.markdown_source,
 
 extensions={'md':'markdown'}
 
-template_dir="templates"
+templates="templates"
+static="static"
+static_dest="static"
+content = 'content'
 
-content_dir = 'content'
-
-site_dir = 'site'
+site = 'site'

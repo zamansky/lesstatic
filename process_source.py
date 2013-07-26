@@ -50,7 +50,7 @@ def htmlize_source(s,dict={}):
     {%% endblock %%}
     """
 
-    dir = config.base_dir+"/"+config.template_dir
+    dir = config.base_dir+"/"+config.templates
     loader = jinja2.FileSystemLoader([dir])
     env = jinja2.Environment(loader=loader)
     t=env.from_string(tsource%dict)
