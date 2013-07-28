@@ -1,0 +1,7 @@
+
+static: static
+static_dir: static
+extensions:
+ md: markdown
+ tm : html
+
