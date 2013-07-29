@@ -1,7 +1,10 @@
-
+templates: templates
+content: content
 static: static
-static_dir: static
+static_dest: static
+site: site
 extensions:
  md: markdown
- tm : html
+ htm : html
+ html: html
 
