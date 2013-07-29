@@ -1,8 +1,9 @@
 #!/usr/bin/python
 import re
-import config
+from config import config
 import markdown,codecs,jinja2
 import os
+import yaml
 
 def separate_front_matter(s):
     """ Separate the yaml in front from the rest of the text
@@ -13,6 +14,7 @@ def separate_front_matter(s):
           (yaml,cotent)
     """
     state="before_yaml"
+    yaml_string=""
     yaml_dict={}
     doc=""
     for line in s.split("\n"):
@@ -21,14 +23,15 @@ def separate_front_matter(s):
         elif line=="---" and state=="in_yaml":
             state="after_yaml"
         elif state=="in_yaml":
-            (a,b) = re.split(": ?",line)
-            yaml_dict[a]=b
+            yaml_string = yaml_string + line +"\n"
         else:
             doc=doc+line+"\n"
+    yaml_dict = yaml.load(yaml_string)
+            
     return (yaml_dict,doc)
 
 def markdown_source(s,dict=None):
-    """ 
+    """
     just sends the source through markdown for now
     """
     r = markdown.markdown(s,['sane_lists'])
@@ -38,7 +41,7 @@ def htmlize_source(s,dict={}):
     """
     plugs the source html into a dummy jinja template (defined below)
     then does the substitution.
-    Most of the work is to get the dummy template to 
+    Most of the work is to get the dummy template to
     extend from the parent specified in the dict (yaml)
     """
 
@@ -50,9 +53,10 @@ def htmlize_source(s,dict={}):
     {%% endblock %%}
     """
 
-    dir = config.base_dir+"/"+config.templates
+    dir = config['base_dir']+"/"+config['templates']
     loader = jinja2.FileSystemLoader([dir])
     env = jinja2.Environment(loader=loader)
+
     t=env.from_string(tsource%dict)
 
     return t.render(dict)
@@ -62,7 +66,7 @@ def htmlize_source(s,dict={}):
 
 
 def process_file(fname):
-    """ Converts file to html by 
+    """ Converts file to html by
         1. Reading the file
         2. pulling off yaml front matter
         3. running through processors like markdown etc
@@ -73,7 +77,7 @@ def process_file(fname):
         Returns:
           the content of the file converted to html
     """
-          
+
     (root,ext)=os.path.splitext(fname)
     ext=ext[1:]
 
@@ -83,14 +87,18 @@ def process_file(fname):
     (yaml,source)=separate_front_matter(rawfile)
 
     # do any preprocessing
-    if config.extensions.has_key(ext):
-        source = config.processors[config.extensions[ext]](source)
+    if config['extensions'].has_key(ext) and config['extensions'][ext]!='html':
+        source = processors[config['extensions'][ext]](source)
 
     # and then use jinja to deal with the templates
     result = htmlize_source(source,yaml)
 
     return result
 
+
+
+processors={'markdown':markdown_source,
+           'html':htmlize_source}
 
 
 if __name__=="__main__":

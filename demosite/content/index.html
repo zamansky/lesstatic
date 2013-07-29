@@ -1,18 +1,37 @@
 ---
 layout: base.html
-title: The main page
+title: The super main page
 author: Mike Zamansky
+var: a new variable
+l:
+ - one
+ - two
+ - three
 block: content
 ---
 
 <h1> {{title}} </h1>
 
+<hr>
+stuff between the headings
+<hr>
+more stuff in {{ var }} between
+<hr>
+stuff between the headings
+<hr>
 
 <h2> by {{author}} </h2>
 
+<ul>
+{% for item in l %}
+<li>{{item}}</li>
+{% endfor %}
+</ul>
 
 
-Thiflooos is the index page
+This is the index page
 
-With more stuff
+more stuff inserted
+
+
 

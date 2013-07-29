@@ -1,13 +1,15 @@
-import process_source as ps
+import yaml
 
-processors={'markdown':ps.markdown_source,
-           'html':ps.htmlize_source}
 
-extensions={'md':'markdown'}
 
-templates="templates"
-static="static"
-static_dest="static"
-content = 'content'
 
-site = 'site'
+config={}
+def load_config(file="config.yaml"):
+    yamldict = yaml.load(open(file).read())
+    for k in yamldict:
+        config[k]=yamldict[k]
+
+
+if __name__=="__main__":
+    load_config()
+    print config

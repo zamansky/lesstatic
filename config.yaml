@@ -1,0 +1,11 @@
+port: 5544
+templates: templates
+content: content
+static: static
+static_dest: static
+site: site
+extensions:
+ md: markdown
+ htm : html
+ html: html
+
