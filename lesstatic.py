@@ -6,8 +6,14 @@ import re,time
 import server
 def build_site():
     if os.path.exists(config['site']):
-        shutil.rmtree(config['site'])
-    os.mkdir(config['site'])
+        for f in os.listdir(config['site']):
+            filename = config['site']+"/"+f
+            if os.path.isfile(filename):
+                os.remove(filename)
+            else:
+                shutil.rmtree(filename)
+    else:
+        os.mkdir(config['site'])
     if os.path.exists(config['static']):
         shutil.copytree(config['static'],config['site']+"/"+config['static_dest'])
 
@@ -29,15 +35,15 @@ def build_site():
 
 def serve():
 
-    s = server.Server(config['port'])
-    s.start()
-
+    print "HELLO"
     olds=" ".join([" ".join(["%f"%os.stat(dir+"/"+f).st_mtime for f in files if f[0]!='.']) for (dir,subs,files) in os.walk(config['content'])])
+    pid = server.start_server()
     while  True:
         time.sleep(1)
         news=" ".join([" ".join(["%f"%os.stat(dir+"/"+f).st_mtime for f in files if f[0] !='.']) for (dir,subs,files) in os.walk(config['content'])])
         if news!=olds:
             print "REBUILDING"
+            time.sleep(3)
             build_site()
             olds = news
 

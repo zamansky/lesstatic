@@ -3,7 +3,7 @@ import re
 from config import config
 import markdown,codecs,jinja2
 import os
-
+import yaml
 
 def separate_front_matter(s):
     """ Separate the yaml in front from the rest of the text
@@ -14,6 +14,7 @@ def separate_front_matter(s):
           (yaml,cotent)
     """
     state="before_yaml"
+    yaml_string=""
     yaml_dict={}
     doc=""
     for line in s.split("\n"):
@@ -22,10 +23,11 @@ def separate_front_matter(s):
         elif line=="---" and state=="in_yaml":
             state="after_yaml"
         elif state=="in_yaml":
-            (a,b) = re.split(": ?",line)
-            yaml_dict[a]=b
+            yaml_string = yaml_string + line +"\n"
         else:
             doc=doc+line+"\n"
+    yaml_dict = yaml.load(yaml_string)
+            
     return (yaml_dict,doc)
 
 def markdown_source(s,dict=None):
@@ -54,7 +56,7 @@ def htmlize_source(s,dict={}):
     dir = config['base_dir']+"/"+config['templates']
     loader = jinja2.FileSystemLoader([dir])
     env = jinja2.Environment(loader=loader)
-    
+
     t=env.from_string(tsource%dict)
 
     return t.render(dict)

@@ -1,21 +1,23 @@
 
 from multiprocessing import Process
 import SimpleHTTPServer, SocketServer,os
-
 from config import config
 
-class Server(Process):
-    def __init__(self,p):
-        self.port = int(p)
-        super(Server,self).__init__()
+def serve():
+    os.chdir(config['site'])
+    Handler = SimpleHTTPServer.SimpleHTTPRequestHandler
+    httpd = SocketServer.TCPServer(("",config['port']),Handler)
+    print "Serving on port", config['port']
+    print "Ctrl-C to exit"
+    httpd.serve_forever()
 
-    def run(self):
-        os.chdir(config['site'])
-        Handler = SimpleHTTPServer.SimpleHTTPRequestHandler
-        httpd = SocketServer.TCPServer(("",self.port),Handler)
-        print "Serving on port", self.port
-        print "Ctrl-C to exit"
-        httpd.serve_forever()
+def start_server():
+    i = os.fork()
+    if i==0:
+        serve()
+    else:
+        return i
+
 
 if __name__=="__main__":
     s = Server(6666)
