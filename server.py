@@ -4,6 +4,11 @@ import SimpleHTTPServer, SocketServer,os
 from config import config
 
 def serve():
+    """
+    Change to the site directory and run
+    a simple server forever
+    """
+
     os.chdir(config['site'])
     Handler = SimpleHTTPServer.SimpleHTTPRequestHandler
     httpd = SocketServer.TCPServer(("",config['port']),Handler)
@@ -12,6 +17,10 @@ def serve():
     httpd.serve_forever()
 
 def start_server():
+    """
+    fork off and call a simple server
+    """
+    
     i = os.fork()
     if i==0:
         serve()
