@@ -3,7 +3,7 @@ import process_source as ps
 import os,sys
 import shutil
 import re,time
-
+import server
 def build_site():
     if os.path.exists(config['site']):
         shutil.rmtree(config['site'])
@@ -28,6 +28,10 @@ def build_site():
 
 
 def serve():
+
+    s = server.Server(config['port'])
+    s.start()
+
     olds=" ".join([" ".join(["%f"%os.stat(dir+"/"+f).st_mtime for f in files if f[0]!='.']) for (dir,subs,files) in os.walk(config['content'])])
     while  True:
         time.sleep(1)
@@ -47,7 +51,3 @@ if __name__=="__main__":
         build_site()
     if sys.argv[1]=='serve':
         serve()
-
-
-
-
