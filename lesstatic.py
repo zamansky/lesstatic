@@ -70,12 +70,25 @@ def serve():
             olds = news
 
 
+import argparse
+def parse_args():
+    parser = argparse.ArgumentParser(description="LesStatic Argument")
+    parser.add_argument('-i','--init',action='store_true',help='initialize new project')
+    parser.add_argument('folder',metavar='FOLDER',nargs="?",help='Folder for project (undefined = current folder)')
+    parser.add_argument('-p','--port',nargs='?')
+    parser.add_argument('-s','--serve',action='store_true',help='Run server and rebuild on change')
+    args=parser.parse_args()
+    print args
+
 
 if __name__=="__main__":
-    load_config()
-    if len(sys.argv)>1:
-        os.chdir(sys.argv[-1])
-        config['base_dir']=os.getcwd()
-        build_site()
-    if sys.argv[1]=='serve':
-        serve()
+    parse_args()
+    # load_config()
+    # if len(sys.argv)>1:
+    #     os.chdir(sys.argv[-1])
+    #     config['base_dir']=os.getcwd()
+    #     build_site()
+    # if sys.argv[1]=='serve':
+    #     serve()
+
+
