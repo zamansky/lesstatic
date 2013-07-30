@@ -72,13 +72,18 @@ def serve():
 
 import argparse
 def parse_args():
+    
+
+    has_config=load_config()
+
     parser = argparse.ArgumentParser(description="LesStatic Argument")
     parser.add_argument('-i','--init',action='store_true',help='initialize new project')
     parser.add_argument('folder',metavar='FOLDER',nargs="?",help='Folder for project (undefined = current folder)')
     parser.add_argument('-p','--port',nargs='?')
     parser.add_argument('-s','--serve',action='store_true',help='Run server and rebuild on change')
     args=parser.parse_args()
-    print args
+    
+    
 
 
 if __name__=="__main__":
