@@ -10,7 +10,9 @@ config={}
 def load_config(file="config.yaml"):
     global config
     try:
-        config = yaml.load(open(file).read())
+        yd = yaml.load(open(file).read())
+        for k in yd.keys():
+            config[k]=yd[k]
         return True
     except:
         return False

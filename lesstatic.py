@@ -70,19 +70,54 @@ def serve():
             olds = news
 
 
+initial_config="""
+port: 5544
+templates: templates
+content: content
+static: static
+static_dest: static
+site: site
+extensions:
+ md: markdown
+ htm : html
+ html: html
+"""
+
+
+def init_project(folder):
+    # if folder is none, make sure dir is empty
+    # if not, make sure the folder doesn't exist
+    # then copy over skeleton structure
+
+    pass
+
+
 import argparse
 def parse_args():
     
-
-    has_config=load_config()
-
     parser = argparse.ArgumentParser(description="LesStatic Argument")
     parser.add_argument('-i','--init',action='store_true',help='initialize new project')
     parser.add_argument('folder',metavar='FOLDER',nargs="?",help='Folder for project (undefined = current folder)')
     parser.add_argument('-p','--port',nargs='?')
     parser.add_argument('-s','--serve',action='store_true',help='Run server and rebuild on change')
     args=parser.parse_args()
-    
+
+    if args.folder != None:
+        os.chdir(args.folder)
+    has_config=load_config()
+
+    if args.init:
+        init_project(folder)
+    else:
+        config['base_dir']=os.getcwd()
+        if args.port!=None:
+            config['port']=args.port
+        if args.serve:
+            serve()
+        else:
+            build_site()
+
+            
     
 
 
