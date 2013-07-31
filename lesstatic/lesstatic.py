@@ -79,7 +79,7 @@ def serve():
 
 def parse_args():
 
-    parser = argparse.ArgumentParser(description="LesStatic Argument")
+    parser = argparse.ArgumentParser(description="LesStatic needs to be run in a valid LesStatic project folder (with a config.yaml) or with valid arguments")
     parser.add_argument('-i','--init',action='store_true',help='initialize new project')
     parser.add_argument('folder',metavar='FOLDER',nargs="?",help='Folder for project (undefined = current folder)')
     parser.add_argument('-p','--port',nargs='?')
