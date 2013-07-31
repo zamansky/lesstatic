@@ -2,6 +2,7 @@
 import re
 from config import config
 import markdown,codecs,jinja2
+import jinja2_highlight
 import os
 import yaml
 
@@ -27,14 +28,14 @@ def separate_front_matter(s):
         else:
             doc=doc+line+"\n"
     yaml_dict = yaml.load(yaml_string)
-            
+
     return (yaml_dict,doc)
 
 def markdown_source(s,dict=None):
     """
     just sends the source through markdown for now
     """
-    r = markdown.markdown(s,['sane_lists'])
+    r = markdown.markdown(s,extensions=['codehilite'])
     return r
 
 def htmlize_source(s,dict={}):
@@ -55,7 +56,7 @@ def htmlize_source(s,dict={}):
 
     dir = config['base_dir']+"/"+config['templates']
     loader = jinja2.FileSystemLoader([dir])
-    env = jinja2.Environment(loader=loader)
+    env = jinja2.Environment(loader=loader,extensions=['jinja2_highlight.HighlightExtension'])
 
     t=env.from_string(tsource%dict)
 
