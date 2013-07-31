@@ -36,6 +36,10 @@ l:
  - one
  - two
  - three
+d:
+ key1: val1
+ key2: val2
+ key3: val3
 block: content
 ---
 
@@ -43,13 +47,11 @@ block: content
 <h2> by {{author}} </h2>
 
 <hr>
-stuff between the headings
-<hr>
-more stuff in {{ var }} between
-<hr>
-stuff between the headings
+You can use any variable declared in
+the yaml up top like here: {{ var }} 
 <hr>
 
+You can also use a yaml list:
 
 <ul>
 {% for item in l %}
@@ -57,10 +59,13 @@ stuff between the headings
 {% endfor %}
 </ul>
 
+Or dictionary:
 
-This is the index page
-
-more stuff inserted
+<ol>
+{% for k in d %}
+<li>{{k}} : {{d[k]}}</li>
+{% endfor %}
+</ol>
 
 
 
