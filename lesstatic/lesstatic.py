@@ -7,12 +7,16 @@ import server
 import argparse,init
 
 
-def build_site():
+def build_site(ap=None):
     """
     Walk the content tree and build the entire site.
     """
 
     # Either empty the existing entire site folder
+    if not config.has_key('site'):
+        print ap.print_help()
+        sys.exit()
+
     if os.path.exists(config['site']):
         # We don't want to just remove the entire folder  - if we do and we're running a
         # server, it will lose it's directory and will have to be re-run
@@ -74,7 +78,7 @@ def serve():
 
 
 def parse_args():
-    
+
     parser = argparse.ArgumentParser(description="LesStatic Argument")
     parser.add_argument('-i','--init',action='store_true',help='initialize new project')
     parser.add_argument('folder',metavar='FOLDER',nargs="?",help='Folder for project (undefined = current folder)')
@@ -94,14 +98,15 @@ def parse_args():
     if args.serve:
         serve()
     else:
-        build_site()
+        build_site(parser)
 
-            
-    
+
+def lesstatic():
+    parse_args()
 
 
 if __name__=="__main__":
-    parse_args()
+    lesstatic()
     # load_config()
     # if len(sys.argv)>1:
     #     os.chdir(sys.argv[-1])
@@ -109,5 +114,3 @@ if __name__=="__main__":
     #     build_site()
     # if sys.argv[1]=='serve':
     #     serve()
-
-
