@@ -94,7 +94,7 @@ def parse_args():
     has_config=load_config()
     config['base_dir']=os.getcwd()
     if args.port!=None:
-        config['port']=args.port
+        config['port']=int(args.port)
     if args.serve:
         serve()
     else:
