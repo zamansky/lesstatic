@@ -88,8 +88,22 @@ def init_project(folder):
     # if folder is none, make sure dir is empty
     # if not, make sure the folder doesn't exist
     # then copy over skeleton structure
+    if folder==None or folder=="." :
+        if len(os.listdir("."))!=0:
+            print "Directory not empty"
+            return
+    else:    
+        if os.path.exists(folder):
+            print "Directory already exists"
+            return
+        else:
+            os.mkdir(folder)
+            os.chdir(folder)
+    print "Ok making init stuff in current directory"
 
-    pass
+
+
+    
 
 
 import argparse
@@ -101,21 +115,20 @@ def parse_args():
     parser.add_argument('-p','--port',nargs='?')
     parser.add_argument('-s','--serve',action='store_true',help='Run server and rebuild on change')
     args=parser.parse_args()
+    if args.init:
+        init_project(args.folder)
+        sys.exit(0)
 
     if args.folder != None:
         os.chdir(args.folder)
     has_config=load_config()
-
-    if args.init:
-        init_project(folder)
+    config['base_dir']=os.getcwd()
+    if args.port!=None:
+        config['port']=args.port
+    if args.serve:
+        serve()
     else:
-        config['base_dir']=os.getcwd()
-        if args.port!=None:
-            config['port']=args.port
-        if args.serve:
-            serve()
-        else:
-            build_site()
+        build_site()
 
             
     
