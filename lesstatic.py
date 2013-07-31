@@ -59,6 +59,7 @@ def serve():
 
     It's not efficient, it just sees if ANY file that isn't hidden changes.
     """
+    build_site()
     olds=" ".join([" ".join(["%f"%os.stat(dir+"/"+f).st_mtime for f in files if f[0]!='.']) for (dir,subs,files) in os.walk(config['content'])])
     pid = server.start_server()
     while  True:
@@ -71,7 +72,7 @@ def serve():
 
 
 initial_config="""
-port: 5544
+port: 8000
 templates: templates
 content: content
 static: static
@@ -81,6 +82,60 @@ extensions:
  md: markdown
  htm : html
  html: html
+"""
+
+init_dirs=['templates','content','static']
+
+base_template="""
+<html>
+
+<h1>Stuff at the top </h1>
+{% block content %}
+{% endblock %}
+<h2>Stuff at the bottom<h2>
+
+</html>
+"""
+
+index_html="""
+---
+layout: base.html
+title: The LesStatic Sample Page
+author: Mike Zamansky
+var: a new variable
+l:
+ - one
+ - two
+ - three
+block: content
+---
+
+<h1> {{title}} </h1>
+<h2> by {{author}} </h2>
+
+<hr>
+stuff between the headings
+<hr>
+more stuff in {{ var }} between
+<hr>
+stuff between the headings
+<hr>
+
+
+<ul>
+{% for item in l %}
+<li>foof {{item}}</li>
+{% endfor %}
+</ul>
+
+
+This is the index page
+
+more stuff inserted
+
+
+
+
 """
 
 
@@ -99,7 +154,18 @@ def init_project(folder):
         else:
             os.mkdir(folder)
             os.chdir(folder)
-    print "Ok making init stuff in current directory"
+    f=open("config.yaml","w")
+    f.write(initial_config)
+    f.close()
+
+    for d in init_dirs:
+        os.mkdir(d)
+    f = open("content/index.html","w")
+    f.write(index_html)
+    f.close()
+    f = open("templates/base.html","w")
+    f.write(base_template)
+    f.close()
 
 
 
