@@ -25,4 +25,4 @@ it's in Ruby.
  7. open a browser window to **http://localhost:8000**
  8. Edit the files as needed
  9. Ctrl-c to break out of the server
-
+ 10. Also, take a look at the demosite directory in the repository
