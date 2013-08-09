@@ -3,20 +3,26 @@ lesstatic
 
 A simple Python based Static Site generator
 
-### Config options
- * extensions={'md':'markdown,'html':html}
- * post_dirs=['posts']
- * content_dirs=['content']
- * templates_dir='tempalates' # note - only one of these
+I'm writing this because I'm a python guy and as nice as Jekyll is,
+it's in Ruby.
 
-### Optional Markdown in content files:
+### Features
+ * Markdown and html processing
+ * Pygments for code snippets
+ * Jinja2 templates 
+ * Written in Python
+ * Simple configuration using yaml
 
-If blog_dir is present, treat page as a blog. You can optionally specify 
-the other keywords as well
+## Take a look at the documentation [here](http://zamansky.github.io/lesstatic)
 
- * posts_dir : DIR // directory to find posts for this page
- * paginate : n // use the paginator? If so, how many posts per page
- * blurb : True/False // use blurb (rather than full post)
+## Quickstart
+ 1. Download or clone from here
+ 2. cd into the lesstatic directory
+ 3. sudo pip install .
+ 4. create a new project with template files: **lesstatic --init some_new_directory_name**
+ 5. switch into that directory: **cd some_new_directory_name**
+ 6. start the building server: **lesstatic --serve**
+ 7. open a browser window to **http://localhost:8000**
+ 8. Edit the files as needed
+ 9. Ctrl-c to break out of the server
 
-Any unspecified definition in the YAML topmatter is sent to the page
-as a key/value pair in the dictionary that goes to the template.
