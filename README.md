@@ -13,7 +13,7 @@ it's in Ruby.
  * Written in Python
  * Simple configuration using yaml
 
-## Take a look at the documentation (here)[http://zamansky.github.io/lesstatic]
+## Take a look at the documentation [here](http://zamansky.github.io/lesstatic)
 
 ## Quickstart
  1. Download or clone from here
