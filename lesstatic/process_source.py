@@ -1,8 +1,8 @@
 #!/usr/bin/python
+import jinja2_highlight
 import re
 from config import config
 import markdown,codecs,jinja2
-import jinja2_highlight
 import os
 import yaml
 

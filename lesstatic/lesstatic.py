@@ -92,6 +92,9 @@ def parse_args():
     if args.folder != None:
         os.chdir(args.folder)
     has_config=load_config()
+    if not has_config:
+        print "Can't find configuration file"
+        sys.exit(0)
     config['base_dir']=os.getcwd()
     if args.port!=None:
         config['port']=int(args.port)
