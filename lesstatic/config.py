@@ -1,3 +1,6 @@
+
+import jinja2_highlight # this is just to get around a loader warning
+
 import yaml
 
 
@@ -21,4 +24,3 @@ def load_config(file="config.yaml"):
 if __name__=="__main__":
     print load_config()
     print config
-

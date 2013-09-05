@@ -55,6 +55,8 @@ def build_site(ap=None):
                 outfile = open(outfilename,"w")
                 outfile.write(result)
                 outfile.close()
+            else: # just copy over the file
+                shutil.copyfile(dir+"/"+f,dest+"/"+f)
 
 
 def serve():
@@ -92,6 +94,9 @@ def parse_args():
     if args.folder != None:
         os.chdir(args.folder)
     has_config=load_config()
+    if not has_config:
+        print "Can't find configuration file"
+        sys.exit(0)
     config['base_dir']=os.getcwd()
     if args.port!=None:
         config['port']=int(args.port)
