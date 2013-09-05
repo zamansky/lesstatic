@@ -55,6 +55,8 @@ def build_site(ap=None):
                 outfile = open(outfilename,"w")
                 outfile.write(result)
                 outfile.close()
+            else: # just copy over the file
+                shutil.copyfile(dir+"/"+f,dest+"/"+f)
 
 
 def serve():
